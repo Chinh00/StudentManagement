@@ -26,19 +26,49 @@ services:
     restart: unless-stopped
     networks:
       education:
-  strapi:
-    container_name: strapi
-    hostname: strapi
+        
+   
+  strapi-subject:
+    container_name: strapi-subject
+    hostname: strapi-subject
     build:
-      dockerfile: ./src/UserService/user-api/Dockerfile
-    image: strapi:latest
+      dockerfile: ./src/SubjectService/subject-api/Dockerfile
+    image: strapi-subject:latest
     restart: unless-stopped
     env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
       DATABASE_HOST: postgres
       DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_NAME: subjectdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1338:1337"
+    depends_on:
+      - postgres
+    networks:
+      education: 
+  
+  
+       
+  strapi-user:
+    container_name: strapi-user
+    hostname: strapi-user
+    build:
+      dockerfile: ./src/UserService/user-api/Dockerfile
+    image: strapi-user:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: userdb
       DATABASE_USERNAME: ${DATABASE_USERNAME}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
@@ -47,6 +77,35 @@ services:
       NODE_ENV: ${NODE_ENV}
     ports:
       - "1337:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+        
+        
+        
+        
+  strapi-enrollment:
+    container_name: strapi-enrollment
+    hostname: strapi-enrollment
+    build:
+      dockerfile: ./src/EnrollmentService/enrollment-api/Dockerfile
+    image: strapi-enrollment:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: enrollmentdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1339:1337"
     depends_on:
       - postgres
     networks:
@@ -63,13 +122,14 @@ services:
       POSTGRES_USER: strapi
       POSTGRES_PASSWORD: strapi
     volumes:
-      - data:/var/lib/postgresql/data
+      - ./data/postgresql:/var/lib/postgresql/data
+      - ./__build/scripts/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
     networks:
       education:
 
 
 volumes:
-  pg-data:
   stacks:
 networks:
   education:

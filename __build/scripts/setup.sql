@@ -1,0 +1,5 @@
+
+CREATE DATABASE userdb;
+CREATE DATABASE enrollmentdb;
+CREATE DATABASE subjectdb;
+CREATE DATABASE keycloak;

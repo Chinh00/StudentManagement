@@ -1,5 +1,5 @@
 {
-  "name": "subject-api",
+  "name": "enrollment-api",
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "5.4.0",
     "@strapi/strapi": "5.4.0",
     "better-sqlite3": "11.3.0",
+    "pg": "^8.13.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -31,6 +32,6 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "d3df2d2a-9b58-411e-a00d-5ea790850e11"
+    "uuid": "1086ab8b-294e-4be7-ba96-97d543dd8e69"
   }
 }
