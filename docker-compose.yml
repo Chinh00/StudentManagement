@@ -1,6 +1,20 @@
 version: "3.9"
 
 services:
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: "start-dev --db=postgres --features=token-exchange --db-url=jdbc:postgresql://postgres:5432/keycloak --db-username=strapi --db-password=strapi"
+    volumes:
+      - ./data/keycloak:/opt/keycloak/data/import
+    networks:
+      education:
+  
   appsmith:
     image: index.docker.io/appsmith/appsmith-ee
     container_name: appsmith
@@ -8,12 +22,13 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - stacks:/appsmith-stacks
+      - ./data/stacks:/appsmith-stacks
     restart: unless-stopped
     networks:
       education:
   strapi:
     container_name: strapi
+    hostname: strapi
     build:
       dockerfile: ./src/UserService/user-api/Dockerfile
     image: strapi:latest
@@ -54,7 +69,7 @@ services:
 
 
 volumes:
-  data:
+  pg-data:
   stacks:
 networks:
   education:
