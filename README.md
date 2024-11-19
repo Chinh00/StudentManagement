@@ -29,12 +29,12 @@ Run file `docker-compose.yml` in root directory
     </tr>
     <tr>
         <td> Subject service (keycloak) </td>
-        <td> --------------------------- </td>
+        <td> <a href="http://localhost:1338">http://localhost:1338</a> </td>
         <td> Pending... </td>
     </tr>
     <tr>
         <td> Enrollment service (keycloak) </td>
-        <td> --------------------------- </td>
+        <td> <a href="http://localhost:1339">http://localhost:1339</a> </td>
         <td> Pending... </td>
     </tr>
     
