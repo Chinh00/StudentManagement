@@ -1,5 +1,5 @@
 {
-  "name": "my-strapi-project",
+  "name": "user-api",
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",
@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "5.4.0",
     "@strapi/strapi": "5.4.0",
     "better-sqlite3": "11.3.0",
+    "pg": "^8.13.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -24,6 +25,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "esbuild": "^0.21.3",
     "typescript": "^5"
   },
   "engines": {
@@ -31,6 +33,6 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "2b1d9a19-3652-413b-975f-ecc44714e846"
+    "uuid": "65bf3dbd-b452-481f-92e8-00030d758338"
   }
 }
