@@ -28,6 +28,7 @@ services:
       education:
         
    
+   
   strapi-subject:
     container_name: strapi-subject
     hostname: strapi-subject
@@ -110,7 +111,33 @@ services:
       - postgres
     networks:
       education:
-  
+        
+  strapi-notification:
+    container_name: strapi-notification
+    hostname: strapi-notification
+    build:
+      dockerfile: ./src/NotificationService/notification-api/Dockerfile
+    image: strapi-notification:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: notificationdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1340:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+    
   
   postgres:
     image: postgres
@@ -129,7 +156,4 @@ services:
       education:
 
 
-volumes:
-  stacks:
-networks:
   education:
