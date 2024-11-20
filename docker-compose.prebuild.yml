@@ -1,0 +1,152 @@
+version: "3.9"
+
+services:
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: "start-dev --db=postgres --features=token-exchange --db-url=jdbc:postgresql://postgres:5432/keycloak --db-username=strapi --db-password=strapi"
+    volumes:
+      - ./data/keycloak:/opt/keycloak/data/import
+    networks:
+      education:
+  
+  appsmith:
+    image: index.docker.io/appsmith/appsmith-ee
+    container_name: appsmith
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/stacks:/appsmith-stacks
+    restart: unless-stopped
+    networks:
+      education:
+  
+  
+  
+  strapi-subject:
+    container_name: strapi-subject
+    hostname: strapi-subject
+    image: chinhval/studentmanagementsubjectservice
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: subjectdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1338:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+  
+  
+  
+  strapi-user:
+    container_name: strapi-user
+    hostname: strapi-user
+    image: chinhval/studentmanagementuserservice
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: userdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1337:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+  
+  
+  
+  
+  strapi-enrollment:
+    container_name: strapi-enrollment
+    hostname: strapi-enrollment
+    image: chinhval/studentmanagementenrollmentservice
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: enrollmentdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1339:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+  
+  strapi-notification:
+    container_name: strapi-notification
+    hostname: strapi-notification
+    image: chinhval/studentmanagementnotificationservice
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: notificationdb
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    ports:
+      - "1340:1337"
+    depends_on:
+      - postgres
+    networks:
+      education:
+  
+  
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: strapi
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+      - ./__build/scripts/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+
+    networks:
+      education:
+
+
+networks:
+  education:

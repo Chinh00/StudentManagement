@@ -156,4 +156,5 @@ services:
       education:
 
 
+networks:
   education:
