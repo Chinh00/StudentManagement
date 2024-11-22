@@ -58,6 +58,13 @@ jobs:
           file: src/UserService/user-api/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.USER_SERVICE}}:latest
+      - name: Build and push sidecar service
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: src/SidecarService/SidecarService/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.SIDECAR_SERVICE}}:latest
 
   
   
