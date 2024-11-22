@@ -26,8 +26,20 @@ services:
     restart: unless-stopped
     networks:
       education:
-  
-  
+  redis:
+    container_name: redis
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "5005:8001"
+  sidecarservice:
+    image: chinhval/studentmanagementsidecarservice
+    ports:
+      - "5006:80"
+    environment:
+      InternalService__UserServiceEducation: http://strapi-user/api
+      Redis__Host: redis
+      Redis__Port: 6379
   
   strapi-subject:
     container_name: strapi-subject
