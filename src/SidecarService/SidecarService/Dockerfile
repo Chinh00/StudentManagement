@@ -7,7 +7,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["/src/SidecarService/SidecarService/SidecarService.csproj", "SidecarService/"]
+COPY ["SidecarService/SidecarService.csproj", "SidecarService/"]
 RUN dotnet restore "SidecarService/SidecarService.csproj"
 COPY . .
 WORKDIR "/src/SidecarService"

@@ -11,8 +11,7 @@ public class RedisService : IRedisService
     public RedisService(IConfiguration configuration)
     {
         _lazy = new Lazy<ConnectionMultiplexer>(() =>
-            ConnectionMultiplexer.Connect(
-                $"localhost:6379"));
+            ConnectionMultiplexer.Connect($"{configuration.GetValue<string>("Redis:Host")}:{configuration.GetValue<string>("Redis:Port")}"));
 
     }
 

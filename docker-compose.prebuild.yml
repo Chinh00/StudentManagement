@@ -32,16 +32,19 @@ services:
     ports:
       - "6379:6379"
       - "5005:8001"
+    networks:
+      education:
   sidecarservice:
-    build:
-      context: .
-      dockerfile: /src/SidecarService/SidecarService/Dockerfile
+    container_name: sidecarservice
+    image: chinhval/studentmanagementsidecarservice
     ports:
       - "5006:80"
     environment:
       InternalService__UserServiceEducation: http://strapi-user/api
       Redis__Host: redis
       Redis__Port: 6379
+    networks:
+      education:
   
   strapi-subject:
     container_name: strapi-subject
