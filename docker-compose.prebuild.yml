@@ -33,7 +33,9 @@ services:
       - "6379:6379"
       - "5005:8001"
   sidecarservice:
-    image: chinhval/studentmanagementsidecarservice
+    build:
+      context: .
+      dockerfile: /src/SidecarService/SidecarService/Dockerfile
     ports:
       - "5006:80"
     environment:
